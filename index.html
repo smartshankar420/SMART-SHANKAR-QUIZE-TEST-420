@@ -68,17 +68,17 @@
       color: white;
     }
     .btn {
-      padding: 12px 25px;
+      padding: 14px 35px;
       margin: 10px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 18px;
+      font-size: 20px;
     }
     .btn-primary { background: #007bff; color: white; }
     .btn-secondary { background: #6c757d; color: white; }
 
-    /* केवल Start Test बटन पर animation रहे */
+    /* Start button animation */
     .btn-success.start {
       background: #28a745;
       color: white;
@@ -96,12 +96,12 @@
       box-shadow: 0 0 25px rgba(30, 126, 52, 0.6);
     }
 
-    /* Finish button normal रहे */
+    /* Finish button normal */
     .btn-success.finish {
       background: #28a745;
       color: white;
-      font-size: 18px;
-      padding: 12px 25px;
+      font-size: 20px;
+      padding: 14px 35px;
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
@@ -156,7 +156,7 @@
     <div>
       <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
       <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
-      <button class="btn btn-success finish" id="finishBtn" onclick="showResult()">Finish</button>
+      <button class="btn btn-success finish" id="finishBtn" onclick="showResult()" style="display:none;">Finish</button>
     </div>
   </div>
 
@@ -206,7 +206,15 @@
       `;
 
       document.getElementById("prevBtn").disabled = currentQuestion === 0;
-      document.getElementById("nextBtn").disabled = currentQuestion === quizData.length - 1;
+
+      // Next और Finish बटन toggle
+      if (currentQuestion === quizData.length - 1) {
+        document.getElementById("nextBtn").style.display = "none";
+        document.getElementById("finishBtn").style.display = "inline-block";
+      } else {
+        document.getElementById("nextBtn").style.display = "inline-block";
+        document.getElementById("finishBtn").style.display = "none";
+      }
     }
 
     function selectOption(option, btn) {
