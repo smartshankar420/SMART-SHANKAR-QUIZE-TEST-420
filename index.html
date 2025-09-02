@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz App - Smart Shankar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    .options {
+      text-align: left;
+      margin: 20px 0;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .btn-primary { background: #007bff; color: white; }
+    .btn-secondary { background: #6c757d; color: white; }
+    .btn-success { background: #28a745; color: white; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Smart Shankar Online Test</h2>
+    <div id="quiz"></div>
+    <div>
+      <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
+      <button class="btn btn-success" id="finishBtn" onclick="showResult()">Finish</button>
+    </div>
+    <div id="result" style="margin-top:20px; font-size:18px; font-weight:bold;"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "1. Harappa kis sabhyata se sambandhit hai?",
+        options: ["Egypt", "Indus Valley", "Mesopotamia", "China"],
+        answer: "Indus Valley"
+      },
+      {
+        question: "2. Ashok ka rajya kis vansh se tha?",
+        options: ["Maurya", "Gupta", "Mughal", "Kushan"],
+        answer: "Maurya"
+      },
+      {
+        question: "3. RBI ka full form kya hai?",
+        options: ["Reserve Bank of India", "Regional Bank of India", "Rural Bank of India", "Rajya Bank of India"],
+        answer: "Reserve Bank of India"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = [];
+
+    function loadQuestion() {
+      const quiz = document.getElementById("quiz");
+      const data = quizData[currentQuestion];
+
+      quiz.innerHTML = `
+        <p>${data.question}</p>
+        <div class="options">
+          ${data.options.map((opt, i) => `
+            <label>
+              <input type="radio" name="answer" value="${opt}" ${userAnswers[currentQuestion] === opt ? "checked" : ""}>
+              ${opt}
+            </label>
+          `).join("")}
+        </div>
+      `;
+
+      document.getElementById("prevBtn").disabled = currentQuestion === 0;
+      document.getElementById("nextBtn").disabled = currentQuestion === quizData.length - 1;
+    }
+
+    function nextQuestion() {
+      saveAnswer();
+      if (currentQuestion < quizData.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      saveAnswer();
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion();
+      }
+    }
+
+    function saveAnswer() {
+      const selected = document.querySelector('input[name="answer"]:checked');
+      if (selected) {
+        userAnswers[currentQuestion] = selected.value;
+      }
+    }
+
+    function showResult() {
+      saveAnswer();
+      let correct = 0, wrong = 0;
+      quizData.forEach((q, i) => {
+        if (userAnswers[i] === q.answer) {
+          correct++;
+        } else {
+          wrong++;
+        }
+      });
+      document.getElementById("result").innerHTML =
+        `✅ Sahi: ${correct} <br> ❌ Galat: ${wrong}`;
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
