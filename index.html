@@ -68,17 +68,22 @@
       color: white;
     }
     .btn {
-      padding: 14px 35px;
+      padding: 12px 25px;
       margin: 10px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 20px;
+      font-size: 18px;
     }
-    .btn-primary { background: #007bff; color: white; }
+    .btn-primary { 
+      background: #007bff; 
+      color: white; 
+      font-size: 20px;
+      padding: 14px 35px;
+    }
     .btn-secondary { background: #6c757d; color: white; }
 
-    /* Start button animation */
+    /* Start Test बटन animation */
     .btn-success.start {
       background: #28a745;
       color: white;
@@ -100,14 +105,16 @@
     .btn-success.finish {
       background: #28a745;
       color: white;
-      font-size: 20px;
-      padding: 14px 35px;
+      font-size: 18px;
+      padding: 12px 25px;
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
+      display: none; /* पहले hidden */
     }
 
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
     .top-bar {
       width: 100%;
       display: flex;
@@ -125,6 +132,14 @@
       font-size: 16px;
       border-radius: 6px;
       cursor: pointer;
+    }
+
+    /* Buttons bottom align */
+    .btn-container {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+      margin-top: 20px;
     }
 
     @keyframes pulse {
@@ -153,10 +168,14 @@
     </div>
     <div class="header">SMART SHANKAR ONLINE TEST</div>
     <div id="quiz"></div>
-    <div>
+
+    <!-- Buttons section -->
+    <div class="btn-container">
       <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
-      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
-      <button class="btn btn-success finish" id="finishBtn" onclick="showResult()" style="display:none;">Finish</button>
+      <div>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
+        <button class="btn btn-success finish" id="finishBtn" onclick="showResult()">Finish</button>
+      </div>
     </div>
   </div>
 
@@ -207,7 +226,7 @@
 
       document.getElementById("prevBtn").disabled = currentQuestion === 0;
 
-      // Next और Finish बटन toggle
+      // Next और Finish का control
       if (currentQuestion === quizData.length - 1) {
         document.getElementById("nextBtn").style.display = "none";
         document.getElementById("finishBtn").style.display = "inline-block";
