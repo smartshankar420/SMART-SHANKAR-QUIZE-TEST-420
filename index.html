@@ -16,16 +16,22 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       background: white;
       text-align: center;
+      padding-top: 80px;
     }
-    h1 {
-      text-transform: uppercase;
-      font-size: 28px;
-      margin-bottom: 20px;
-      color: #444;
+    .header {
+      width: 90%;
+      margin: 20px auto;
+      padding: 20px;
+      background: #d9d9d9;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+      color: #333;
     }
     h2 {
       font-size: 22px;
@@ -92,7 +98,7 @@
 <body>
   <!-- Welcome Screen -->
   <div class="container" id="welcomeScreen">
-    <h1>SMART SHANKAR ONLINE TEST</h1>
+    <div class="header">SMART SHANKAR ONLINE TEST</div>
     <p>स्वागत है! नीचे दिए गए बटन पर क्लिक करके टेस्ट शुरू करें।</p>
     <button class="btn btn-success" onclick="startQuiz()">Start Test</button>
   </div>
@@ -102,7 +108,7 @@
     <div class="top-bar">
       <button class="back-btn" onclick="goBack()">⬅ Back</button>
     </div>
-    <h1>SMART SHANKAR ONLINE TEST</h1>
+    <div class="header">SMART SHANKAR ONLINE TEST</div>
     <div id="quiz"></div>
     <div>
       <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
@@ -113,7 +119,7 @@
 
   <!-- Result Screen -->
   <div class="container" id="resultScreen" style="display:none;">
-    <h1>RESULT</h1>
+    <div class="header">RESULT</div>
     <div id="result"></div>
   </div>
 
