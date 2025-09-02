@@ -19,39 +19,43 @@
       justify-content: center;
       align-items: center;
       background: white;
+      text-align: center;
     }
     h1 {
       text-transform: uppercase;
       font-size: 28px;
       margin-bottom: 20px;
-      text-align: center;
+      color: #444;
     }
     h2 {
       font-size: 22px;
       margin-bottom: 20px;
-      text-align: center;
+      color: black;
     }
     .options {
       margin: 20px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
     }
     .option-btn {
       display: block;
-      width: 200px;
-      margin: 10px 0;
-      padding: 10px;
+      width: 180px;
+      padding: 15px;
       border-radius: 25px;
       border: none;
       cursor: pointer;
-      background: brown;
-      color: white;
+      background: #d9d9d9;
+      color: black;
       font-size: 18px;
       transition: 0.3s;
     }
+    .option-btn:hover {
+      background: #bbb;
+    }
     .option-btn.selected {
-      background: blue !important;
+      background: #007bff !important;
+      color: white;
     }
     .btn {
       padding: 12px 25px;
@@ -70,6 +74,9 @@
       display: flex;
       justify-content: flex-start;
       padding: 10px;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
     .back-btn {
       background: #ff6600;
@@ -85,7 +92,7 @@
 <body>
   <!-- Welcome Screen -->
   <div class="container" id="welcomeScreen">
-    <h1>WELCOME TO SMART SHANKAR ONLINE TEST</h1>
+    <h1>SMART SHANKAR ONLINE TEST</h1>
     <p>स्वागत है! नीचे दिए गए बटन पर क्लिक करके टेस्ट शुरू करें।</p>
     <button class="btn btn-success" onclick="startQuiz()">Start Test</button>
   </div>
@@ -106,7 +113,7 @@
 
   <!-- Result Screen -->
   <div class="container" id="resultScreen" style="display:none;">
-    <h1>SMART SHANKAR ONLINE TEST RESULT</h1>
+    <h1>RESULT</h1>
     <div id="result"></div>
   </div>
 
@@ -143,7 +150,7 @@
           ${data.options.map((opt, index) => `
             <button class="option-btn ${userAnswers[currentQuestion] === opt ? "selected" : ""}" 
               onclick="selectOption('${opt}', this)">
-              (${String.fromCharCode(65+index)}) ${opt}
+              ${opt}
             </button>
           `).join("")}
         </div>
