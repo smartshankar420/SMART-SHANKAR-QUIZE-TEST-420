@@ -1,270 +1,138 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SMART SHANKAR ONLINE TEST</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #4facfe, #00f2fe), url('https://picsum.photos/1200/800?blur=3') no-repeat center center fixed;
-      background-size: cover;
-      margin: 0;
-      padding: 0;
-      color: #333;
+const questions = {
+  history: [
+    {
+      topic: "हड़प्पा",
+      q: "हड़प्पा किस सभ्यता से सम्बंधित है?",
+      options: ["मिस्र", "सिंधु घाटी", "मेसोपोटामिया", "चीन"],
+      answer: "सिंधु घाटी"
+    },
+    {
+      topic: "अशोक",
+      q: "अशोक किस वंश से था?",
+      options: ["गुप्त", "मौर्य", "कुषाण", "मुगल"],
+      answer: "मौर्य"
     }
-    .container {
-      max-width: 100%;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      background: rgba(255,255,255,0.85);
-      text-align: center;
-      padding-top: 80px;
+  ],
+  science: [
+    {
+      topic: "पानी",
+      q: "पानी का रासायनिक सूत्र क्या है?",
+      options: ["CO2", "H2O", "O2", "NaCl"],
+      answer: "H2O"
     }
-    .header {
-      width: 90%;
-      margin: 20px auto;
-      padding: 20px;
-      background: #d9d9d9;
-      border-radius: 50px;
-      text-align: center;
-      font-size: 26px;
-      font-weight: bold;
-      color: #333;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    h2 {
-      font-size: 22px;
-      margin-bottom: 20px;
-      color: black;
-      animation: fadeIn 0.6s ease-in-out;
-    }
-    .options {
-      margin: 20px 0;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-    .option-btn {
-      display: block;
-      width: 180px;
-      padding: 15px;
-      border-radius: 25px;
-      border: none;
-      cursor: pointer;
-      background: #d9d9d9;
-      color: black;
-      font-size: 18px;
-      transition: 0.3s;
-    }
-    .option-btn:hover {
-      background: #bbb;
-    }
-    .option-btn.selected {
-      background: #007bff !important;
-      color: white;
-    }
-    .btn {
-      padding: 12px 25px;
-      margin: 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 18px;
-    }
-    .btn-primary { background: #007bff; color: white; }
-    .btn-secondary { background: #6c757d; color: white; }
-    .btn-success {
-      background: #28a745;
-      color: white;
-      font-size: 22px;
-      padding: 16px 32px;
-      border-radius: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      animation: pulse 1.5s infinite;
-    }
-    .btn-success:hover {
-      background: #1e7e34;
-      transform: scale(1.1);
-      box-shadow: 0 0 25px rgba(30, 126, 52, 0.6);
-    }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .top-bar {
-      width: 100%;
-      display: flex;
-      justify-content: flex-start;
-      padding: 10px;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-    .back-btn {
-      background: #ff6600;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      font-size: 16px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+  ]
+};
 
-    /* Pulse animation for Start Test */
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 rgba(40, 167, 69, 0.7);
-      }
-      50% {
-        transform: scale(1.08);
-        box-shadow: 0 0 25px rgba(40, 167, 69, 0.9);
-      }
-      100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 rgba(40, 167, 69, 0.7);
-      }
-    }
+let currentCategory = "";
+let currentQuestions = [];
+let currentIndex = 0;
+let userAnswers = [];
 
-    /* Fade animation for questions */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-</head>
-<body>
-  <!-- Welcome Screen -->
-  <div class="container" id="welcomeScreen">
-    <div class="header">SMART SHANKAR ONLINE TEST</div>
-    <p>स्वागत है! नीचे दिए गए बटन पर क्लिक करके टेस्ट शुरू करें।</p>
-    <button class="btn btn-success" onclick="startQuiz()">Start Test</button>
-  </div>
+function showCategories() {
+  document.getElementById("welcomePage").classList.add("hidden");
+  document.getElementById("categoryPage").classList.remove("hidden");
+}
 
-  <!-- Quiz Screen -->
-  <div class="container" id="quizScreen" style="display:none; flex-direction:column;">
-    <div class="top-bar">
-      <button class="back-btn" onclick="goBack()">⬅ Back</button>
-    </div>
-    <div class="header">SMART SHANKAR ONLINE TEST</div>
-    <div id="quiz"></div>
-    <div>
-      <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
-      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
-      <button class="btn btn-success" id="finishBtn" onclick="showResult()">Finish</button>
-    </div>
-  </div>
+function showTopics(category) {
+  currentCategory = category;
+  document.getElementById("categoryPage").classList.add("hidden");
+  document.getElementById("topicsPage").classList.remove("hidden");
 
-  <!-- Result Screen -->
-  <div class="container" id="resultScreen" style="display:none;">
-    <div class="header">RESULT</div>
-    <div id="result"></div>
-  </div>
+  document.getElementById("topicTitle").innerText = category.toUpperCase();
+  const topicList = document.getElementById("topicList");
+  topicList.innerHTML = "";
+  questions[category].forEach((q, i) => {
+    let btn = document.createElement("button");
+    btn.innerText = (i+1) + ". " + q.topic;
+    btn.className = "category-btn";
+    btn.style.background = "green";
+    btn.onclick = () => startQuiz(i);
+    topicList.appendChild(btn);
+  });
+}
 
-  <script>
-    const quizData = [
-      {
-        question: "1. हड़प्पा किस सभ्यता से सम्बंधित है?",
-        options: ["पटना", "सिंधु घाटी", "मेसोपोटामिया", "चीन"],
-        answer: "सिंधु घाटी"
-      },
-      {
-        question: "2. अशोक किस वंश से था?",
-        options: ["मौर्य", "गुप्त", "मुगल", "कुषाण"],
-        answer: "मौर्य"
-      }
-    ];
+function backToCategories() {
+  document.getElementById("topicsPage").classList.add("hidden");
+  document.getElementById("categoryPage").classList.remove("hidden");
+}
 
-    let currentQuestion = 0;
-    let userAnswers = [];
+function backToTopics() {
+  document.getElementById("quizPage").classList.add("hidden");
+  document.getElementById("topicsPage").classList.remove("hidden");
+}
 
-    function startQuiz() {
-      document.getElementById("welcomeScreen").style.display = "none";
-      document.getElementById("quizScreen").style.display = "flex";
-      loadQuestion();
-    }
+function startQuiz(index) {
+  currentQuestions = questions[currentCategory];
+  currentIndex = index;
+  userAnswers = [];
+  document.getElementById("topicsPage").classList.add("hidden");
+  document.getElementById("quizPage").classList.remove("hidden");
+  loadQuestion();
+}
 
-    function loadQuestion() {
-      const quiz = document.getElementById("quiz");
-      const data = quizData[currentQuestion];
+function loadQuestion() {
+  let q = currentQuestions[currentIndex];
+  document.getElementById("question").innerText = q.q;
+  let optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
 
-      quiz.innerHTML = `
-        <h2>${data.question}</h2>
-        <div class="options">
-          ${data.options.map((opt) => `
-            <button class="option-btn ${userAnswers[currentQuestion] === opt ? "selected" : ""}" 
-              onclick="selectOption('${opt}', this)">
-              ${opt}
-            </button>
-          `).join("")}
-        </div>
-      `;
+  q.options.forEach(opt => {
+    let btn = document.createElement("button");
+    btn.innerText = opt;
+    btn.onclick = () => selectAnswer(opt);
+    optionsDiv.appendChild(btn);
+  });
 
-      document.getElementById("prevBtn").disabled = currentQuestion === 0;
-      document.getElementById("nextBtn").disabled = currentQuestion === quizData.length - 1;
-    }
+  document.getElementById("prevBtn").disabled = currentIndex === 0;
+  document.getElementById("nextBtn").style.display = currentIndex === currentQuestions.length - 1 ? "none" : "inline-block";
+  document.getElementById("finishBtn").style.display = currentIndex === currentQuestions.length - 1 ? "inline-block" : "none";
+}
 
-    function selectOption(option, btn) {
-      userAnswers[currentQuestion] = option;
-      const buttons = document.querySelectorAll(".option-btn");
-      buttons.forEach(b => b.classList.remove("selected"));
-      btn.classList.add("selected");
-    }
+function selectAnswer(answer) {
+  userAnswers[currentIndex] = answer;
+}
 
-    function nextQuestion() {
-      if (currentQuestion < quizData.length - 1) {
-        currentQuestion++;
-        loadQuestion();
-      }
-    }
+function prevQuestion() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    loadQuestion();
+  }
+}
+function nextQuestion() {
+  if (currentIndex < currentQuestions.length - 1) {
+    currentIndex++;
+    loadQuestion();
+  }
+}
 
-    function prevQuestion() {
-      if (currentQuestion > 0) {
-        currentQuestion--;
-        loadQuestion();
-      }
-    }
+function finishQuiz() {
+  document.getElementById("quizPage").classList.add("hidden");
+  document.getElementById("resultPage").classList.remove("hidden");
 
-    function goBack() {
-      document.getElementById("quizScreen").style.display = "none";
-      document.getElementById("welcomeScreen").style.display = "flex";
-      currentQuestion = 0;
-      userAnswers = [];
-    }
+  let correct = 0;
+  let wrong = 0;
+  let total = currentQuestions.length;
 
-    function showResult() {
-      document.getElementById("quizScreen").style.display = "none";
-      document.getElementById("resultScreen").style.display = "flex";
+  let answersDiv = document.getElementById("answers");
+  answersDiv.innerHTML = "";
 
-      let correct = 0, wrong = 0, total = quizData.length;
-      let resultHTML = `<p>कुल प्रश्न: ${total}</p>`;
+  currentQuestions.forEach((q, i) => {
+    let userAns = userAnswers[i] || "❌ चुना नहीं";
+    let isCorrect = userAns === q.answer;
+    if (isCorrect) correct++; else wrong++;
 
-      quizData.forEach((q, i) => {
-        let userAns = userAnswers[i] ? userAnswers[i] : "❌ कोई उत्तर नहीं चुना";
-        let isCorrect = userAns === q.answer;
+    let div = document.createElement("div");
+    div.innerHTML = (isCorrect ? "✔️ " : "❌ ") + (i+1) + ". " + q.q +
+      "<br> आपका उत्तर: <button style='background:"+(isCorrect?"green":"red")+";color:white'>" + userAns + "</button>" +
+      (isCorrect ? "" : "<br> सही उत्तर: <button style='background:green;color:white'>" + q.answer + "</button>");
+    div.style.marginBottom = "15px";
+    answersDiv.appendChild(div);
+  });
 
-        if (isCorrect) {
-          correct++;
-          resultHTML += `<div style="background:#e6ffe6; padding:10px; margin:5px; border-radius:8px;">
-            ✔️ <b>${i+1}. ${q.question}</b><br>
-            आपका उत्तर: <span style="color:green; font-weight:bold;">${userAns}</span>
-          </div>`;
-        } else {
-          wrong++;
-          resultHTML += `<div style="background:#ffe6e6; padding:10px; margin:5px; border-radius:8px;">
-            ❌ <b>${i+1}. ${q.question}</b><br>
-            आपका उत्तर: <span style="color:red; font-weight:bold;">${userAns}</span><br>
-            सही उत्तर: <span style="color:green; font-weight:bold;">${q.answer}</span>
-          </div>`;
-        }
-      });
+  document.getElementById("score").innerText = `✅ सही उत्तर: ${correct} ❌ गलत उत्तर: ${wrong} / कुल प्रश्न: ${total}`;
+}
 
-      resultHTML += `<h3>✅ सही उत्तर: ${correct} | ❌ गलत उत्तर: ${wrong}</h3>`;
-      document.getElementById("result").innerHTML = resultHTML;
-    }
-  </script>
-</body>
-</html>
+function restartQuiz() {
+  document.getElementById("resultPage").classList.add("hidden");
+  document.getElementById("welcomePage").classList.remove("hidden");
+}
