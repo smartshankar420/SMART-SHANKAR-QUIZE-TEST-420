@@ -3,86 +3,124 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SMART SHANKAR ONLINE TEST</title>
+  <title>QUIZ APP - SMART SHANKAR</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
       background: #f4f4f9;
       margin: 0;
       padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .container {
-      max-width: 800px;
-      margin: 30px auto;
+      width: 100%;
+      max-width: 900px;
+      height: 90vh;
       background: white;
-      padding: 20px;
+      padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-    h1 {
-      text-transform: uppercase;
-      font-size: 28px;
-      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      overflow-y: auto;
     }
     h2 {
-      font-size: 22px;
       margin-bottom: 20px;
+      text-transform: uppercase;
+      font-size: 28px;
+    }
+    .question-text {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #222;
+      text-align: left;
     }
     .options {
       text-align: left;
       margin: 20px 0;
+      flex-grow: 1;
     }
     .options label {
       display: block;
-      margin-bottom: 10px;
-      padding: 10px;
+      margin-bottom: 15px;
+      padding: 12px;
       border: 1px solid #ddd;
       border-radius: 6px;
       cursor: pointer;
       font-size: 18px;
     }
     .btn {
-      padding: 10px 20px;
+      padding: 12px 24px;
       margin: 10px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 18px;
     }
     .btn-primary { background: #007bff; color: white; }
     .btn-secondary { background: #6c757d; color: white; }
     .btn-success { background: #28a745; color: white; }
+    .btn-warning { background: #ff9800; color: white; }
+    .btn-danger { background: #f44336; color: white; }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .result-box {
-      border: 1px solid #ccc; 
-      padding: 10px; 
-      margin: 10px 0; 
-      border-radius: 8px;
+    #result {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
       text-align: left;
+    }
+    #result h3 {
+      text-align: center;
+      font-size: 24px;
+      color: #007bff;
+    }
+    #result p {
+      font-size: 18px;
+      margin: 5px 0;
+    }
+    #startScreen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+    #quizSection {
+      display: none;
+      flex-grow: 1;
+      flex-direction: column;
+      justify-content: space-between;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="welcomeScreen">
-    <h1>WELCOME TO SMART SHANKAR ONLINE TEST</h1>
-    <p>स्वागत है! नीचे दिए गए बटन पर क्लिक करके टेस्ट शुरू करें।</p>
-    <button class="btn btn-success" onclick="startQuiz()">Start Test</button>
-  </div>
+  <div class="container">
+    <h2>SMART SHANKAR ONLINE TEST</h2>
 
-  <div class="container" id="quizScreen" style="display:none;">
-    <h1>SMART SHANKAR ONLINE TEST</h1>
-    <div id="quiz"></div>
-    <div>
-      <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
-      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
-      <button class="btn btn-success" id="finishBtn" onclick="showResult()">Finish</button>
+    <!-- Start Screen -->
+    <div id="startScreen">
+      <p style="font-size:22px;">स्वागत है! नीचे दिए गए बटन पर क्लिक करके टेस्ट शुरू करें।</p>
+      <button class="btn btn-warning" onclick="startQuiz()">START TEST</button>
     </div>
-  </div>
 
-  <div class="container" id="resultScreen" style="display:none;">
-    <h1>SMART SHANKAR ONLINE TEST RESULT</h1>
-    <div id="result"></div>
+    <!-- Quiz Section -->
+    <div id="quizSection">
+      <div id="quiz"></div>
+      <div>
+        <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
+        <button class="btn btn-success" id="finishBtn" onclick="showResult()" style="display:none;">Finish</button>
+      </div>
+      <div id="result"></div>
+      <div id="restartBtnContainer"></div>
+    </div>
   </div>
 
   <script>
@@ -99,17 +137,17 @@
       },
       {
         question: "3. RBI का पूरा नाम क्या है?",
-        options: ["भारतीय रिज़र्व बैंक", "रीजनल बैंक ऑफ इंडिया", "रूरल बैंक ऑफ इंडिया", "राज्य बैंक ऑफ इंडिया"],
+        options: ["भारतीय रिज़र्व बैंक", "भारतीय क्षेत्रीय बैंक", "भारतीय ग्रामीण बैंक", "भारतीय राज्य बैंक"],
         answer: "भारतीय रिज़र्व बैंक"
       },
       {
         question: "4. भारत का राष्ट्रीय पशु कौन है?",
-        options: ["सिंह", "बाघ", "हाथी", "गाय"],
+        options: ["सिंह", "हाथी", "बाघ", "गैंडा"],
         answer: "बाघ"
       },
       {
         question: "5. पानी का रासायनिक सूत्र क्या है?",
-        options: ["CO2", "H2O", "O2", "NaCl"],
+        options: ["H2O", "CO2", "O2", "NaCl"],
         answer: "H2O"
       }
     ];
@@ -118,8 +156,12 @@
     let userAnswers = [];
 
     function startQuiz() {
-      document.getElementById("welcomeScreen").style.display = "none";
-      document.getElementById("quizScreen").style.display = "block";
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("quizSection").style.display = "flex";
+      currentQuestion = 0;
+      userAnswers = [];
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("restartBtnContainer").innerHTML = "";
       loadQuestion();
     }
 
@@ -128,7 +170,7 @@
       const data = quizData[currentQuestion];
 
       quiz.innerHTML = `
-        <h2>${data.question}</h2>
+        <p class="question-text">${data.question}</p>
         <div class="options">
           ${data.options.map((opt) => `
             <label>
@@ -140,7 +182,8 @@
       `;
 
       document.getElementById("prevBtn").disabled = currentQuestion === 0;
-      document.getElementById("nextBtn").disabled = currentQuestion === quizData.length - 1;
+      document.getElementById("nextBtn").style.display = currentQuestion === quizData.length - 1 ? "none" : "inline-block";
+      document.getElementById("finishBtn").style.display = currentQuestion === quizData.length - 1 ? "inline-block" : "none";
     }
 
     function nextQuestion() {
@@ -168,45 +211,25 @@
 
     function showResult() {
       saveAnswer();
-      document.getElementById("quizScreen").style.display = "none";
-      document.getElementById("resultScreen").style.display = "block";
-
       let correct = 0, wrong = 0;
-      let total = quizData.length;
-
-      let resultHTML = `
-        <p>कुल प्रश्न: ${total}</p>
-      `;
+      let answerKeyHTML = "<h3>TEST RESULT</h3>";
 
       quizData.forEach((q, i) => {
-        let userAns = userAnswers[i] ? userAnswers[i] : "❌ कोई उत्तर नहीं चुना";
-        let isCorrect = userAns === q.answer;
-
-        if (isCorrect) {
+        let userAnswer = userAnswers[i] || "कोई उत्तर नहीं चुना";
+        if (userAnswer === q.answer) {
           correct++;
-          resultHTML += `
-            <div class="result-box" style="background:#e6ffe6;">
-              ✔️ <b>${i+1}. ${q.question}</b><br>
-              आपका उत्तर: <span style="color:green; font-weight:bold;">${userAns}</span>
-            </div>
-          `;
+          answerKeyHTML += `<p>✔️ ${q.question} <br> आपका उत्तर: <b>${userAnswer}</b></p>`;
         } else {
           wrong++;
-          resultHTML += `
-            <div class="result-box" style="background:#ffe6e6;">
-              ❌ <b>${i+1}. ${q.question}</b><br>
-              आपका उत्तर: <span style="color:red; font-weight:bold;">${userAns}</span><br>
-              सही उत्तर: <span style="color:green; font-weight:bold;">${q.answer}</span>
-            </div>
-          `;
+          answerKeyHTML += `<p>❌ ${q.question} <br> आपका उत्तर: <b>${userAnswer}</b> <br> सही उत्तर: <b>${q.answer}</b></p>`;
         }
       });
 
-      resultHTML += `
-        <h3>✅ सही उत्तर: ${correct} | ❌ गलत उत्तर: ${wrong}</h3>
-      `;
+      document.getElementById("result").innerHTML =
+        `✅ सही उत्तर: ${correct} <br> ❌ गलत उत्तर: ${wrong} <br><br>` + answerKeyHTML;
 
-      document.getElementById("result").innerHTML = resultHTML;
+      document.getElementById("restartBtnContainer").innerHTML =
+        `<button class="btn btn-danger" onclick="startQuiz()">Restart Test</button>`;
     }
   </script>
 </body>
