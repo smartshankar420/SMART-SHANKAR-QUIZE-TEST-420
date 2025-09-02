@@ -67,17 +67,17 @@
     }
     .btn {
       padding: 12px 25px;
-      margin: 10px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       font-size: 18px;
+      min-width: 120px; /* बटन बराबर साइज के दिखेंगे */
     }
     .btn-primary { 
       background: #007bff; 
       color: white; 
       font-size: 20px;
-      padding: 14px 35px;
+      padding: 14px 30px;
     }
     .btn-secondary { background: #6c757d; color: white; }
 
@@ -97,8 +97,8 @@
     .btn-success.finish {
       background: #28a745;
       color: white;
-      font-size: 18px;
-      padding: 12px 25px;
+      font-size: 20px;
+      padding: 14px 30px;
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
@@ -129,9 +129,9 @@
     /* Button container */
     .btn-container {
       width: 90%;
-      margin-top: 30px;
+      margin-top: 40px;
       display: flex;
-      justify-content: space-between; /* Previous बाएं, Next/Finish दाएं */
+      justify-content: space-between; /* Previous left, Next/Finish right */
       align-items: center;
     }
     .right-buttons {
