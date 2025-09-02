@@ -1,82 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz App - SMART SHANAKAR </title>
+  <title>QUIZ APP - SMART SHANKAR</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
       background: #f4f4f9;
       margin: 0;
       padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .container {
-      max-width: 600px;
-      margin: 50px auto;
+      width: 100%;
+      max-width: 900px; /* bada size */
+      height: 90vh; /* screen ka 90% */
       background: white;
-      padding: 20px;
+      padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     h2 {
       margin-bottom: 20px;
+      text-transform: uppercase; /* capital me */
+      font-size: 28px;
     }
     .options {
       text-align: left;
       margin: 20px 0;
+      flex-grow: 1;
     }
     .options label {
       display: block;
-      margin-bottom: 10px;
-      padding: 8px;
+      margin-bottom: 15px;
+      padding: 12px;
       border: 1px solid #ddd;
       border-radius: 6px;
       cursor: pointer;
+      font-size: 18px;
     }
     .btn {
-      padding: 10px 20px;
+      padding: 12px 24px;
       margin: 10px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 18px;
     }
     .btn-primary { background: #007bff; color: white; }
     .btn-secondary { background: #6c757d; color: white; }
     .btn-success { background: #28a745; color: white; }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    #result {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Smart Shankar Online Test</h2>
+    <h2>SMART SHANKAR ONLINE TEST</h2>
     <div id="quiz"></div>
     <div>
       <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
       <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
       <button class="btn btn-success" id="finishBtn" onclick="showResult()">Finish</button>
     </div>
-    <div id="result" style="margin-top:20px; font-size:18px; font-weight:bold;"></div>
+    <div id="result"></div>
   </div>
 
   <script>
     const quizData = [
       {
-        question: "1. Harappa kis sabhyata se sambandhit hai?",
-        options: ["Egypt", "Indus Valley", "Mesopotamia", "China"],
-        answer: "Indus Valley"
+        question: "1. हड़प्पा किस सभ्यता से सम्बंधित है?",
+        options: ["मिस्र", "सिंधु घाटी", "मेसोपोटामिया", "चीन"],
+        answer: "सिंधु घाटी"
       },
       {
-        question: "2. Ashok ka rajya kis vansh se tha?",
-        options: ["Maurya", "Gupta", "Mughal", "Kushan"],
-        answer: "Maurya"
+        question: "2. अशोक किस वंश से था?",
+        options: ["मौर्य", "गुप्त", "मुगल", "कुषाण"],
+        answer: "मौर्य"
       },
       {
-        question: "3. RBI ka full form kya hai?",
-        options: ["Reserve Bank of India", "Regional Bank of India", "Rural Bank of India", "Rajya Bank of India"],
-        answer: "Reserve Bank of India"
+        question: "3. RBI का पूरा नाम क्या है?",
+        options: ["भारतीय रिज़र्व बैंक", "भारतीय क्षेत्रीय बैंक", "भारतीय ग्रामीण बैंक", "भारतीय राज्य बैंक"],
+        answer: "भारतीय रिज़र्व बैंक"
+      },
+      {
+        question: "4. भारत का राष्ट्रीय पशु कौन है?",
+        options: ["सिंह", "हाथी", "बाघ", "गैंडा"],
+        answer: "बाघ"
+      },
+      {
+        question: "5. पानी का रासायनिक सूत्र क्या है?",
+        options: ["H2O", "CO2", "O2", "NaCl"],
+        answer: "H2O"
       }
     ];
 
@@ -88,7 +115,7 @@
       const data = quizData[currentQuestion];
 
       quiz.innerHTML = `
-        <p>${data.question}</p>
+        <p style="font-size:20px; font-weight:bold;">${data.question}</p>
         <div class="options">
           ${data.options.map((opt, i) => `
             <label>
@@ -137,7 +164,7 @@
         }
       });
       document.getElementById("result").innerHTML =
-        `✅ Sahi: ${correct} <br> ❌ Galat: ${wrong}`;
+        `✅ सही उत्तर: ${correct} <br> ❌ गलत उत्तर: ${wrong}`;
     }
 
     loadQuestion();
