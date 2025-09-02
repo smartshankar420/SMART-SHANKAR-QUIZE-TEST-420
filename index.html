@@ -34,6 +34,13 @@
       text-transform: uppercase;
       font-size: 28px;
     }
+    .question-text {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #222;
+      text-align: left;
+    }
     .options {
       text-align: left;
       margin: 20px 0;
@@ -71,6 +78,8 @@
     }
     #result h3 {
       text-align: center;
+      font-size: 24px;
+      color: #007bff;
     }
     #result p {
       font-size: 18px;
@@ -107,7 +116,7 @@
       <div>
         <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
         <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
-        <button class="btn btn-success" id="finishBtn" onclick="showResult()">Finish</button>
+        <button class="btn btn-success" id="finishBtn" onclick="showResult()" style="display:none;">Finish</button>
       </div>
       <div id="result"></div>
       <div id="restartBtnContainer"></div>
@@ -161,7 +170,7 @@
       const data = quizData[currentQuestion];
 
       quiz.innerHTML = `
-        <p style="font-size:20px; font-weight:bold;">${data.question}</p>
+        <p class="question-text">${data.question}</p>
         <div class="options">
           ${data.options.map((opt) => `
             <label>
@@ -173,7 +182,8 @@
       `;
 
       document.getElementById("prevBtn").disabled = currentQuestion === 0;
-      document.getElementById("nextBtn").disabled = currentQuestion === quizData.length - 1;
+      document.getElementById("nextBtn").style.display = currentQuestion === quizData.length - 1 ? "none" : "inline-block";
+      document.getElementById("finishBtn").style.display = currentQuestion === quizData.length - 1 ? "inline-block" : "none";
     }
 
     function nextQuestion() {
@@ -202,7 +212,7 @@
     function showResult() {
       saveAnswer();
       let correct = 0, wrong = 0;
-      let answerKeyHTML = "<h3>📋 परिणाम और उत्तर कुंजी</h3>";
+      let answerKeyHTML = "<h3>TEST RESULT</h3>";
 
       quizData.forEach((q, i) => {
         let userAnswer = userAnswers[i] || "कोई उत्तर नहीं चुना";
