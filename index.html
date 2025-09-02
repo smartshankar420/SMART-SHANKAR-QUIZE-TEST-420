@@ -5,135 +5,195 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SMART SHANKAR QUIZ TEST</title>
   <style>
-    body { font-family: Arial, sans-serif; background:#f5f6fa; text-align:center; margin:0; padding:0; }
-    .container { max-width:700px; margin:30px auto; background:white; padding:25px; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.2); }
-    h1 { font-size:26px; margin-bottom:15px; }
-    .menu button { display:block; width:100%; margin:10px 0; padding:12px; font-size:18px; border:none; border-radius:8px; cursor:pointer; background:#007bff; color:white; }
-    .submenu button { background:#6c757d; }
-    .question { font-size:20px; margin-bottom:15px; font-weight:bold; }
-    .options label { display:block; margin:8px 0; font-size:18px; text-align:left; }
-    button.nav { margin:10px; padding:10px 20px; border:none; border-radius:8px; cursor:pointer; }
-    .btn-primary{background:#007bff;color:white} .btn-success{background:#28a745;color:white}
-    .btn-warning{background:orange;color:white} .btn-secondary{background:gray;color:white}
-    .correct{background:#d4edda;padding:10px;border-radius:5px;margin:5px 0}
-    .wrong{background:#f8d7da;padding:10px;border-radius:5px;margin:5px 0}
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f5f6fa;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 700px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    .question {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .options {
+      text-align: left;
+      margin: 15px 0;
+    }
+    .options label {
+      display: block;
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .btn-primary { background: #007bff; color: white; }
+    .btn-success { background: #28a745; color: white; }
+    .btn-secondary { background: gray; color: white; }
+    .btn-warning { background: orange; color: white; }
+    .result {
+      font-size: 18px;
+      text-align: left;
+      margin-top: 20px;
+    }
+    .correct { background: #d4edda; padding: 10px; border-radius: 5px; }
+    .wrong { background: #f8d7da; padding: 10px; border-radius: 5px; }
+    .menu button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+    }
   </style>
 </head>
 <body>
 
 <div class="container" id="welcomeScreen">
   <h1>WELCOME TO SMART SHANKAR TEST</h1>
+  <p>स्वागत है! नीचे दिए गए बटन पर क्लिक करके टेस्ट शुरू करें</p>
   <button class="btn-primary" onclick="showCategories()">Start Test</button>
 </div>
 
 <div class="container" id="categoryScreen" style="display:none;">
   <h1>Choose Category</h1>
   <div class="menu">
-    <button onclick="toggleSubmenu('historySubmenu')">📘 History</button>
-    <div id="historySubmenu" class="submenu" style="display:none;">
-      <button onclick="startQuiz('harappa')">1. हड़प्पा</button>
-      <button onclick="startQuiz('ashoka')">2. सिंधु</button>
-    </div>
-    <button onclick="toggleSubmenu('economicsSubmenu')">💹 Economics</button>
-    <div id="economicsSubmenu" class="submenu" style="display:none;">
-      <button onclick="startQuiz('rbi')">1. RBI</button>
-      <button onclick="startQuiz('animal')">2. National Animal</button>
-    </div>
+    <button onclick="startQuiz('history')" class="btn-primary">📘 History</button>
+    <button onclick="startQuiz('economics')" class="btn-primary">💹 Economics</button>
   </div>
 </div>
 
 <div class="container" id="quizScreen" style="display:none;">
   <div class="question" id="questionText"></div>
   <div class="options" id="options"></div>
-  <button class="btn-warning nav" onclick="backToCategory()">⬅ Back</button>
-  <button class="btn-secondary nav" onclick="prevQuestion()">Previous</button>
-  <button class="btn-primary nav" onclick="nextQuestion()">Next</button>
-  <button class="btn-success nav" onclick="finishQuiz()">Finish</button>
+  <button class="btn-warning" onclick="backToCategory()">⬅ Back</button>
+  <button class="btn-secondary" onclick="prevQuestion()">Previous</button>
+  <button class="btn-primary" onclick="nextQuestion()">Next</button>
+  <button class="btn-success" onclick="finishQuiz()">Finish</button>
 </div>
 
 <div class="container" id="resultScreen" style="display:none;">
   <h1>Test Result</h1>
   <div id="score"></div>
-  <div id="answerKey"></div>
+  <div id="answerKey" class="result"></div>
   <button class="btn-warning" onclick="showCategories()">Back to Categories</button>
 </div>
 
 <script>
 const questions = {
-  harappa: [
-    { q: "हड़प्पा किस सभ्यता से सम्बंधित है?", options:["मिस्र","सिंधु घाटी","मेसोपोटामिया","चीन"], answer:1 }
+  history: [
+    { q: "हड़प्पा किस सभ्यता से सम्बंधित है?", options: ["मिस्र", "सिंधु घाटी", "मेसोपोटामिया", "चीन"], answer: 1 },
+    { q: "अशोक किस वंश से था?", options: ["गुप्त", "मौर्य", "कुषाण", "मुगल"], answer: 1 }
   ],
-  ashoka: [
-    { q: "अशोक किस वंश से था?", options:["गुप्त","मौर्य","कुषाण","मुगल"], answer:1 }
-  ],
-  rbi: [
-    { q: "RBI का पूरा नाम क्या है?", options:["भारतीय रिज़र्व बैंक","भारत बैंक","नेशनल बैंक","इंडियन बैंक"], answer:0 }
-  ],
-  animal: [
-    { q: "भारत का राष्ट्रीय पशु कौन है?", options:["सिंह","बाघ","हाथी","चीतah"], answer:1 }
+  economics: [
+    { q: "RBI का पूरा नाम क्या है?", options: ["भारतीय रिज़र्व बैंक", "भारत बैंक", "नेशनल बैंक", "इंडियन बैंक"], answer: 0 },
+    { q: "भारत का राष्ट्रीय पशु कौन है?", options: ["सिंह", "बाघ", "हाथी", "चीतah"], answer: 1 }
   ]
 };
 
-let currentQuiz=null, currentQ=0, userAns=[];
+let currentCategory = null;
+let currentQuestion = 0;
+let userAnswers = [];
 
-function showCategories(){
-  document.getElementById("welcomeScreen").style.display="none";
-  document.getElementById("quizScreen").style.display="none";
-  document.getElementById("resultScreen").style.display="none";
-  document.getElementById("categoryScreen").style.display="block";
+function showCategories() {
+  document.getElementById("welcomeScreen").style.display = "none";
+  document.getElementById("quizScreen").style.display = "none";
+  document.getElementById("resultScreen").style.display = "none";
+  document.getElementById("categoryScreen").style.display = "block";
 }
 
-function toggleSubmenu(id){
-  let el=document.getElementById(id);
-  el.style.display= el.style.display==="none"?"block":"none";
+function startQuiz(category) {
+  currentCategory = category;
+  currentQuestion = 0;
+  userAnswers = [];
+  document.getElementById("categoryScreen").style.display = "none";
+  document.getElementById("quizScreen").style.display = "block";
+  loadQuestion();
 }
 
-function startQuiz(quiz){
-  currentQuiz=quiz; currentQ=0; userAns=[];
-  document.getElementById("categoryScreen").style.display="none";
-  document.getElementById("quizScreen").style.display="block";
-  loadQ();
-}
-
-function loadQ(){
-  let q=questions[currentQuiz][currentQ];
-  document.getElementById("questionText").innerText=(currentQ+1)+". "+q.q;
-  let optDiv=document.getElementById("options");
-  optDiv.innerHTML="";
-  q.options.forEach((opt,i)=>{
-    optDiv.innerHTML+=`<label><input type="radio" name="opt" value="${i}" ${userAns[currentQ]==i?"checked":""}> ${opt}</label>`;
+function loadQuestion() {
+  const q = questions[currentCategory][currentQuestion];
+  document.getElementById("questionText").innerText = (currentQuestion+1)+". "+q.q;
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+  q.options.forEach((opt, i) => {
+    optionsDiv.innerHTML += `
+      <label>
+        <input type="radio" name="option" value="${i}" ${userAnswers[currentQuestion] == i ? "checked" : ""}> ${opt}
+      </label>
+    `;
   });
 }
 
-function saveAns(){
-  let sel=document.querySelector('input[name="opt"]:checked');
-  if(sel){userAns[currentQ]=parseInt(sel.value);}
+function prevQuestion() {
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    loadQuestion();
+  }
 }
 
-function prevQuestion(){ if(currentQ>0){saveAns(); currentQ--; loadQ();}}
-function nextQuestion(){ saveAns(); if(currentQ<questions[currentQuiz].length-1){currentQ++; loadQ();}}
+function nextQuestion() {
+  saveAnswer();
+  if (currentQuestion < questions[currentCategory].length - 1) {
+    currentQuestion++;
+    loadQuestion();
+  }
+}
 
-function finishQuiz(){
-  saveAns();
-  document.getElementById("quizScreen").style.display="none";
-  document.getElementById("resultScreen").style.display="block";
-  let right=0, wrong=0, total=questions[currentQuiz].length;
-  let res="";
-  questions[currentQuiz].forEach((q,i)=>{
-    if(userAns[i]===q.answer){
-      right++; res+=`<div class="correct">✔️ ${i+1}. ${q.q}<br> आपका उत्तर: ${q.options[userAns[i]]}</div>`;
-    }else{
-      wrong++; res+=`<div class="wrong">❌ ${i+1}. ${q.q}<br> आपका उत्तर: ${q.options[userAns[i]]||"नहीं चुना"}<br> सही उत्तर: ${q.options[q.answer]}</div>`;
+function saveAnswer() {
+  const selected = document.querySelector('input[name="option"]:checked');
+  if (selected) {
+    userAnswers[currentQuestion] = parseInt(selected.value);
+  }
+}
+
+function finishQuiz() {
+  saveAnswer();
+  document.getElementById("quizScreen").style.display = "none";
+  document.getElementById("resultScreen").style.display = "block";
+  
+  let correct = 0;
+  let wrong = 0;
+  let total = questions[currentCategory].length;
+  let answerKey = "";
+
+  questions[currentCategory].forEach((q, i) => {
+    let userAns = userAnswers[i];
+    if (userAns === q.answer) {
+      correct++;
+      answerKey += `<div class='correct'>✔️ ${i+1}. ${q.q}<br> आपका उत्तर: ${q.options[userAns]}</div><br>`;
+    } else {
+      wrong++;
+      answerKey += `<div class='wrong'>❌ ${i+1}. ${q.q}<br> आपका उत्तर: ${q.options[userAns] || "नहीं चुना"}<br> सही उत्तर: ${q.options[q.answer]}</div><br>`;
     }
   });
-  document.getElementById("score").innerHTML=`✅ सही: ${right} ❌ गलत: ${wrong} / कुल: ${total}`;
-  document.getElementById("answerKey").innerHTML=res;
+
+  document.getElementById("score").innerHTML = `✅ सही उत्तर: ${correct} ❌ गलत उत्तर: ${wrong} / कुल: ${total}`;
+  document.getElementById("answerKey").innerHTML = answerKey;
 }
 
-function backToCategory(){
-  document.getElementById("quizScreen").style.display="none";
-  document.getElementById("categoryScreen").style.display="block";
+function backToCategory() {
+  document.getElementById("quizScreen").style.display = "none";
+  document.getElementById("categoryScreen").style.display = "block";
 }
 </script>
+
 </body>
 </html>
