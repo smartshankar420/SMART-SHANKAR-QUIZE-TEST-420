@@ -77,7 +77,9 @@
     }
     .btn-primary { background: #007bff; color: white; }
     .btn-secondary { background: #6c757d; color: white; }
-    .btn-success {
+
+    /* केवल Start Test बटन पर animation रहे */
+    .btn-success.start {
       background: #28a745;
       color: white;
       font-size: 22px;
@@ -88,11 +90,23 @@
       transition: all 0.3s ease;
       animation: pulse 1.5s infinite;
     }
-    .btn-success:hover {
+    .btn-success.start:hover {
       background: #1e7e34;
       transform: scale(1.1);
       box-shadow: 0 0 25px rgba(30, 126, 52, 0.6);
     }
+
+    /* Finish button normal रहे */
+    .btn-success.finish {
+      background: #28a745;
+      color: white;
+      font-size: 18px;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .top-bar {
       width: 100%;
@@ -113,23 +127,11 @@
       cursor: pointer;
     }
 
-    /* Pulse animation for Start Test */
     @keyframes pulse {
-      0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 rgba(40, 167, 69, 0.7);
-      }
-      50% {
-        transform: scale(1.08);
-        box-shadow: 0 0 25px rgba(40, 167, 69, 0.9);
-      }
-      100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 rgba(40, 167, 69, 0.7);
-      }
+      0% { transform: scale(1); box-shadow: 0 0 0 rgba(40, 167, 69, 0.7); }
+      50% { transform: scale(1.08); box-shadow: 0 0 25px rgba(40, 167, 69, 0.9); }
+      100% { transform: scale(1); box-shadow: 0 0 0 rgba(40, 167, 69, 0.7); }
     }
-
-    /* Fade animation for questions */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -141,7 +143,7 @@
   <div class="container" id="welcomeScreen">
     <div class="header">SMART SHANKAR ONLINE TEST</div>
     <p>स्वागत है! नीचे दिए गए बटन पर क्लिक करके टेस्ट शुरू करें।</p>
-    <button class="btn btn-success" onclick="startQuiz()">Start Test</button>
+    <button class="btn btn-success start" onclick="startQuiz()">Start Test</button>
   </div>
 
   <!-- Quiz Screen -->
@@ -154,7 +156,7 @@
     <div>
       <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
       <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
-      <button class="btn btn-success" id="finishBtn" onclick="showResult()">Finish</button>
+      <button class="btn btn-success finish" id="finishBtn" onclick="showResult()">Finish</button>
     </div>
   </div>
 
