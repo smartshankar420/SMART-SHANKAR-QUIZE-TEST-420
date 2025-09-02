@@ -20,10 +20,11 @@
       justify-content: center;
       align-items: center;
       background: white;
-      position: relative;
     }
-    h1 { font-size: 32px; margin-bottom: 20px; }
-
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
     /* बड़ा हरा Start Test बटन */
     .btn-big {
       background: #28a745;
@@ -62,10 +63,12 @@
       color: white;
     }
     /* Harappa वाला बटन हरा */
-    #harappaBtn { background: #28a745 !important; }
+    #harappaBtn {
+      background: #28a745 !important;
+    }
 
     /* Quiz Questions */
-    .question { font-size: 24px; margin: 20px 0; font-weight: bold; }
+    .question { font-size: 24px; margin-bottom: 20px; font-weight: bold; }
     .options label { display: block; margin: 10px 0; font-size: 20px; text-align: left; }
 
     /* Navigation Buttons */
@@ -84,20 +87,6 @@
 
     .correct { background:#d4edda;padding:10px;border-radius:5px;margin:5px 0; }
     .wrong { background:#f8d7da;padding:10px;border-radius:5px;margin:5px 0; }
-
-    /* Top-left back button */
-    #topBackBtn {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: orange;
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
@@ -127,10 +116,10 @@
 
 <!-- Quiz Screen -->
 <div class="container" id="quizScreen" style="display:none;">
-  <button id="topBackBtn" onclick="backToCategory()">⬅ Back</button>
   <div class="question" id="questionText"></div>
   <div class="options" id="options"></div>
   <div>
+    <button class="btn-warning nav" onclick="backToCategory()">⬅ Back</button>
     <button class="btn-secondary nav" onclick="prevQuestion()">Previous</button>
     <button class="btn-primary nav" onclick="nextQuestion()">Next</button>
     <button class="btn-success nav" onclick="finishQuiz()">Finish</button>
