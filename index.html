@@ -17,8 +17,8 @@
     }
     .container {
       width: 100%;
-      max-width: 900px; /* bada size */
-      height: 90vh; /* screen ka 90% */
+      max-width: 900px;
+      height: 90vh;
       background: white;
       padding: 30px;
       border-radius: 12px;
@@ -26,10 +26,12 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      text-align: center;
+      overflow-y: auto;
     }
     h2 {
       margin-bottom: 20px;
-      text-transform: uppercase; /* capital me */
+      text-transform: uppercase;
       font-size: 28px;
     }
     .options {
@@ -57,25 +59,59 @@
     .btn-primary { background: #007bff; color: white; }
     .btn-secondary { background: #6c757d; color: white; }
     .btn-success { background: #28a745; color: white; }
+    .btn-warning { background: #ff9800; color: white; }
+    .btn-danger { background: #f44336; color: white; }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
     #result {
       margin-top: 20px;
       font-size: 20px;
       font-weight: bold;
       color: #333;
+      text-align: left;
+    }
+    #result h3 {
+      text-align: center;
+    }
+    #result p {
+      font-size: 18px;
+      margin: 5px 0;
+    }
+    #startScreen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+    #quizSection {
+      display: none;
+      flex-grow: 1;
+      flex-direction: column;
+      justify-content: space-between;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>SMART SHANKAR ONLINE TEST</h2>
-    <div id="quiz"></div>
-    <div>
-      <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
-      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
-      <button class="btn btn-success" id="finishBtn" onclick="showResult()">Finish</button>
+
+    <!-- Start Screen -->
+    <div id="startScreen">
+      <p style="font-size:22px;">स्वागत है! नीचे दिए गए बटन पर क्लिक करके टेस्ट शुरू करें।</p>
+      <button class="btn btn-warning" onclick="startQuiz()">START TEST</button>
     </div>
-    <div id="result"></div>
+
+    <!-- Quiz Section -->
+    <div id="quizSection">
+      <div id="quiz"></div>
+      <div>
+        <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
+        <button class="btn btn-success" id="finishBtn" onclick="showResult()">Finish</button>
+      </div>
+      <div id="result"></div>
+      <div id="restartBtnContainer"></div>
+    </div>
   </div>
 
   <script>
@@ -110,6 +146,16 @@
     let currentQuestion = 0;
     let userAnswers = [];
 
+    function startQuiz() {
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("quizSection").style.display = "flex";
+      currentQuestion = 0;
+      userAnswers = [];
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("restartBtnContainer").innerHTML = "";
+      loadQuestion();
+    }
+
     function loadQuestion() {
       const quiz = document.getElementById("quiz");
       const data = quizData[currentQuestion];
@@ -117,7 +163,7 @@
       quiz.innerHTML = `
         <p style="font-size:20px; font-weight:bold;">${data.question}</p>
         <div class="options">
-          ${data.options.map((opt, i) => `
+          ${data.options.map((opt) => `
             <label>
               <input type="radio" name="answer" value="${opt}" ${userAnswers[currentQuestion] === opt ? "checked" : ""}>
               ${opt}
@@ -156,18 +202,25 @@
     function showResult() {
       saveAnswer();
       let correct = 0, wrong = 0;
+      let answerKeyHTML = "<h3>📋 परिणाम और उत्तर कुंजी</h3>";
+
       quizData.forEach((q, i) => {
-        if (userAnswers[i] === q.answer) {
+        let userAnswer = userAnswers[i] || "कोई उत्तर नहीं चुना";
+        if (userAnswer === q.answer) {
           correct++;
+          answerKeyHTML += `<p>✔️ ${q.question} <br> आपका उत्तर: <b>${userAnswer}</b></p>`;
         } else {
           wrong++;
+          answerKeyHTML += `<p>❌ ${q.question} <br> आपका उत्तर: <b>${userAnswer}</b> <br> सही उत्तर: <b>${q.answer}</b></p>`;
         }
       });
-      document.getElementById("result").innerHTML =
-        `✅ सही उत्तर: ${correct} <br> ❌ गलत उत्तर: ${wrong}`;
-    }
 
-    loadQuestion();
+      document.getElementById("result").innerHTML =
+        `✅ सही उत्तर: ${correct} <br> ❌ गलत उत्तर: ${wrong} <br><br>` + answerKeyHTML;
+
+      document.getElementById("restartBtnContainer").innerHTML =
+        `<button class="btn btn-danger" onclick="startQuiz()">Restart Test</button>`;
+    }
   </script>
 </body>
 </html>
