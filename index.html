@@ -84,10 +84,6 @@ function showCategories(){
 }
 
 function toggleSubmenu(id){
-  let submenus=document.querySelectorAll(".submenu");
-  submenus.forEach(menu=>{
-    if(menu.id!==id){ menu.style.display="none"; }
-  });
   let el=document.getElementById(id);
   el.style.display= el.style.display==="none"?"block":"none";
 }
