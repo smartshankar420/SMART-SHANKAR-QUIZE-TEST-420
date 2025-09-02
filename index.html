@@ -22,7 +22,7 @@
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      background: rgba(255, 255, 255, 0.9); /* हल्का सफेद बैकग्राउंड */
+      background: rgba(255, 255, 255, 0.9);
       text-align: center;
       padding-top: 80px;
     }
@@ -97,6 +97,15 @@
       border-radius: 6px;
       cursor: pointer;
     }
+
+    /* 🎬 Animation */
+    .fade {
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+    }
+    .fade.show {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -113,7 +122,7 @@
       <button class="back-btn" onclick="goBack()">⬅ Back</button>
     </div>
     <div class="header">SMART SHANKAR ONLINE TEST</div>
-    <div id="quiz"></div>
+    <div id="quiz" class="fade"></div>
     <div>
       <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
       <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
@@ -154,17 +163,22 @@
       const quiz = document.getElementById("quiz");
       const data = quizData[currentQuestion];
 
-      quiz.innerHTML = `
-        <h2>${data.question}</h2>
-        <div class="options">
-          ${data.options.map((opt, index) => `
-            <button class="option-btn ${userAnswers[currentQuestion] === opt ? "selected" : ""}" 
-              onclick="selectOption('${opt}', this)">
-              ${opt}
-            </button>
-          `).join("")}
-        </div>
-      `;
+      // पहले fade-out फिर नया content डालना
+      quiz.classList.remove("show");
+      setTimeout(() => {
+        quiz.innerHTML = `
+          <h2>${data.question}</h2>
+          <div class="options">
+            ${data.options.map((opt, index) => `
+              <button class="option-btn ${userAnswers[currentQuestion] === opt ? "selected" : ""}" 
+                onclick="selectOption('${opt}', this)">
+                ${opt}
+              </button>
+            `).join("")}
+          </div>
+        `;
+        quiz.classList.add("show");
+      }, 200);
 
       document.getElementById("prevBtn").disabled = currentQuestion === 0;
       document.getElementById("nextBtn").disabled = currentQuestion === quizData.length - 1;
