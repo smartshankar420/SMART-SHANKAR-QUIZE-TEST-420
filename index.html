@@ -2,229 +2,228 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SMART SHANKAR ONLINE TEST</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
       font-family: Arial, sans-serif;
       background: #f4f4f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      margin: 0;
+      padding: 0;
     }
     .container {
-      width: 100%;
-      max-width: 800px;
+      max-width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
       background: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       text-align: center;
+      padding-top: 80px;
     }
-    h1 {
-      font-size: 28px;
-      margin-bottom: 20px;
+    .header {
+      width: 90%;
+      margin: 20px auto;
+      padding: 20px;
+      background: #d9d9d9;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 26px;
+      font-weight: bold;
+      color: #333;
     }
     h2 {
       font-size: 22px;
-      margin: 15px 0;
+      margin-bottom: 20px;
+      color: black;
+    }
+    .options {
+      margin: 20px 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .option-btn {
+      display: block;
+      width: 180px;
+      padding: 15px;
+      border-radius: 25px;
+      border: none;
+      cursor: pointer;
+      background: #d9d9d9;
+      color: black;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+    .option-btn:hover {
+      background: #bbb;
+    }
+    .option-btn.selected {
+      background: #007bff !important;
+      color: white;
     }
     .btn {
-      display: inline-block;
-      margin: 10px;
       padding: 12px 25px;
-      font-size: 18px;
+      margin: 10px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      font-size: 18px;
     }
     .btn-primary { background: #007bff; color: white; }
-    .btn-success { background: #28a745; color: white; }
-    .btn-danger { background: #dc3545; color: white; }
     .btn-secondary { background: #6c757d; color: white; }
-    .btn-large { font-size: 22px; padding: 15px 40px; }
-    .question { font-size: 22px; margin-bottom: 20px; font-weight: bold; }
-    .options label {
-      display: block;
+    .btn-success { background: #28a745; color: white; font-size: 20px; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
       padding: 10px;
-      border: 1px solid #ddd;
-      margin: 8px 0;
-      border-radius: 6px;
-      cursor: pointer;
-      text-align: left;
-    }
-    .options input { margin-right: 10px; }
-    .correct { background: #d4edda; border-color: #28a745; }
-    .wrong { background: #f8d7da; border-color: #dc3545; }
-    .nav-buttons { margin-top: 20px; }
-    .back-btn {
       position: absolute;
-      top: 20px;
-      left: 20px;
-      padding: 10px 20px;
-      background: #6c757d;
+      top: 0;
+      left: 0;
+    }
+    .back-btn {
+      background: #ff6600;
       color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
       border-radius: 6px;
       cursor: pointer;
-      text-decoration: none;
     }
   </style>
 </head>
 <body>
+  <!-- Welcome Screen -->
+  <div class="container" id="welcomeScreen">
+    <div class="header">SMART SHANKAR ONLINE TEST</div>
+    <p>स्वागत है! नीचे दिए गए बटन पर क्लिक करके टेस्ट शुरू करें।</p>
+    <button class="btn btn-success" onclick="startQuiz()">Start Test</button>
+  </div>
 
-<div class="container" id="app"></div>
+  <!-- Quiz Screen -->
+  <div class="container" id="quizScreen" style="display:none; flex-direction:column;">
+    <div class="top-bar">
+      <button class="back-btn" onclick="goBack()">⬅ Back</button>
+    </div>
+    <div class="header">SMART SHANKAR ONLINE TEST</div>
+    <div id="quiz"></div>
+    <div>
+      <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
+      <button class="btn btn-success" id="finishBtn" onclick="showResult()">Finish</button>
+    </div>
+  </div>
 
-<script>
-  const app = document.getElementById("app");
+  <!-- Result Screen -->
+  <div class="container" id="resultScreen" style="display:none;">
+    <div class="header">RESULT</div>
+    <div id="result"></div>
+  </div>
 
-  // Questions Data (Category -> SubCategory -> Questions)
-  const quizData = {
-    "History": {
-      "हड़प्पा": [
-        {
-          question: "हड़प्पा किस सभ्यता से सम्बंधित है?",
-          options: ["मिस्र", "सिंधु घाटी", "मेसोपोटामिया", "चीन"],
-          answer: 1
-        }
-      ],
-      "सिंधु": [
-        {
-          question: "अशोक किस वंश से था?",
-          options: ["मौर्य", "गुप्त", "कुषाण", "मुगल"],
-          answer: 0
-        }
-      ]
-    },
-    "Economics": {
-      "RBI": [
-        {
-          question: "RBI का पूरा नाम क्या है?",
-          options: ["भारतीय रिज़र्व बैंक", "रॉयल बैंक ऑफ इंडिया", "रेगुलेटरी बैंक ऑफ इंडिया", "इनमें से कोई नहीं"],
-          answer: 0
-        }
-      ],
-      "National": [
-        {
-          question: "भारत का राष्ट्रीय पशु कौन है?",
-          options: ["सिंह", "बाघ", "हाथी", "घोड़ा"],
-          answer: 1
-        },
-        {
-          question: "पानी का रासायनिक सूत्र क्या है?",
-          options: ["CO2", "H2O", "O2", "NaCl"],
-          answer: 1
-        }
-      ]
-    }
-  };
-
-  let currentCategory = null;
-  let currentSubCategory = null;
-  let currentQuestionIndex = 0;
-  let answers = [];
-
-  // Welcome Screen
-  function loadWelcome() {
-    app.innerHTML = `
-      <h1>WELCOME TO SMART SHANKAR ONLINE TEST</h1>
-      <button class="btn btn-success btn-large" onclick="loadCategories()">Start Test</button>
-    `;
-  }
-
-  // Categories
-  function loadCategories() {
-    app.innerHTML = `<h1>Choose Category</h1>`;
-    for (let cat in quizData) {
-      app.innerHTML += `<h2>📘 ${cat}</h2>`;
-      for (let sub in quizData[cat]) {
-        app.innerHTML += `<button class="btn btn-success" onclick="loadSubCategory('${cat}','${sub}')">${sub}</button>`;
+  <script>
+    const quizData = [
+      {
+        question: "1. हड़प्पा किस सभ्यता से सम्बंधित है?",
+        options: ["पटना", "सिंधु घाटी", "मेसोपोटामिया", "चीन"],
+        answer: "सिंधु घाटी"
+      },
+      {
+        question: "2. अशोक किस वंश से था?",
+        options: ["मौर्य", "गुप्त", "मुगल", "कुषाण"],
+        answer: "मौर्य"
       }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = [];
+
+    function startQuiz() {
+      document.getElementById("welcomeScreen").style.display = "none";
+      document.getElementById("quizScreen").style.display = "flex";
+      loadQuestion();
     }
-  }
 
-  // SubCategory Start
-  function loadSubCategory(cat, sub) {
-    currentCategory = cat;
-    currentSubCategory = sub;
-    currentQuestionIndex = 0;
-    answers = [];
-    app.innerHTML = `
-      <h1>${sub}</h1>
-      <button class="btn btn-success btn-large" onclick="loadQuestion()">Start Test</button>
-      <button class="btn btn-secondary" onclick="loadCategories()">Back</button>
-    `;
-  }
+    function loadQuestion() {
+      const quiz = document.getElementById("quiz");
+      const data = quizData[currentQuestion];
 
-  // Load Question
-  function loadQuestion() {
-    const questions = quizData[currentCategory][currentSubCategory];
-    const q = questions[currentQuestionIndex];
-
-    app.innerHTML = `
-      <a class="back-btn" onclick="loadSubCategory('${currentCategory}','${currentSubCategory}')">⬅ Back</a>
-      <div class="question">${currentQuestionIndex + 1}. ${q.question}</div>
-      <div class="options">
-        ${q.options.map((opt, i) => `
-          <label>
-            <input type="radio" name="option" value="${i}" ${answers[currentQuestionIndex]===i?"checked":""}> ${opt}
-          </label>`).join("")}
-      </div>
-      <div class="nav-buttons">
-        <button class="btn btn-secondary" onclick="prevQuestion()" ${currentQuestionIndex===0?"disabled":""}>Previous</button>
-        <button class="btn btn-primary" onclick="nextQuestion()" ${currentQuestionIndex===questions.length-1?"disabled":""}>Next</button>
-        <button class="btn btn-success" onclick="finishTest()">Finish</button>
-      </div>
-    `;
-  }
-
-  // Save Selected Option
-  function saveAnswer() {
-    const selected = document.querySelector("input[name='option']:checked");
-    if (selected) {
-      answers[currentQuestionIndex] = parseInt(selected.value);
-    }
-  }
-
-  function prevQuestion() { saveAnswer(); currentQuestionIndex--; loadQuestion(); }
-  function nextQuestion() { saveAnswer(); currentQuestionIndex++; loadQuestion(); }
-
-  // Finish Test
-  function finishTest() {
-    saveAnswer();
-    const questions = quizData[currentCategory][currentSubCategory];
-    let correct = 0;
-    let resultHTML = `<h1>परिणाम और उत्तर कुंजी</h1>`;
-
-    questions.forEach((q, i) => {
-      const userAns = answers[i];
-      const correctAns = q.answer;
-      if (userAns === correctAns) correct++;
-
-      resultHTML += `
-        <div style="text-align:left;margin:15px 0;">
-          <strong>${i+1}. ${q.question}</strong><br>
-          ${q.options.map((opt, idx) => {
-            let cls = "";
-            if (idx === correctAns) cls = "correct";
-            if (userAns === idx && userAns !== correctAns) cls = "wrong";
-            return `<div class="${cls}" style="padding:5px;border-radius:5px;">${opt}</div>`;
-          }).join("")}
+      quiz.innerHTML = `
+        <h2>${data.question}</h2>
+        <div class="options">
+          ${data.options.map((opt, index) => `
+            <button class="option-btn ${userAnswers[currentQuestion] === opt ? "selected" : ""}" 
+              onclick="selectOption('${opt}', this)">
+              ${opt}
+            </button>
+          `).join("")}
         </div>
       `;
-    });
 
-    resultHTML += `
-      <h2>✅ सही उत्तर: ${correct} / ${questions.length}</h2>
-      <h2>❌ गलत उत्तर: ${questions.length - correct}</h2>
-      <button class="btn btn-secondary" onclick="loadSubCategory('${currentCategory}','${currentSubCategory}')">🔙 Back</button>
-    `;
+      document.getElementById("prevBtn").disabled = currentQuestion === 0;
+      document.getElementById("nextBtn").disabled = currentQuestion === quizData.length - 1;
+    }
 
-    app.innerHTML = resultHTML;
-  }
+    function selectOption(option, btn) {
+      userAnswers[currentQuestion] = option;
+      const buttons = document.querySelectorAll(".option-btn");
+      buttons.forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+    }
 
-  loadWelcome();
-</script>
+    function nextQuestion() {
+      if (currentQuestion < quizData.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion();
+      }
+    }
+
+    function goBack() {
+      document.getElementById("quizScreen").style.display = "none";
+      document.getElementById("welcomeScreen").style.display = "flex";
+      currentQuestion = 0;
+      userAnswers = [];
+    }
+
+    function showResult() {
+      document.getElementById("quizScreen").style.display = "none";
+      document.getElementById("resultScreen").style.display = "flex";
+
+      let correct = 0, wrong = 0, total = quizData.length;
+      let resultHTML = `<p>कुल प्रश्न: ${total}</p>`;
+
+      quizData.forEach((q, i) => {
+        let userAns = userAnswers[i] ? userAnswers[i] : "❌ कोई उत्तर नहीं चुना";
+        let isCorrect = userAns === q.answer;
+
+        if (isCorrect) {
+          correct++;
+          resultHTML += `<div style="background:#e6ffe6; padding:10px; margin:5px; border-radius:8px;">
+            ✔️ <b>${i+1}. ${q.question}</b><br>
+            आपका उत्तर: <span style="color:green; font-weight:bold;">${userAns}</span>
+          </div>`;
+        } else {
+          wrong++;
+          resultHTML += `<div style="background:#ffe6e6; padding:10px; margin:5px; border-radius:8px;">
+            ❌ <b>${i+1}. ${q.question}</b><br>
+            आपका उत्तर: <span style="color:red; font-weight:bold;">${userAns}</span><br>
+            सही उत्तर: <span style="color:green; font-weight:bold;">${q.answer}</span>
+          </div>`;
+        }
+      });
+
+      resultHTML += `<h3>✅ सही उत्तर: ${correct} | ❌ गलत उत्तर: ${wrong}</h3>`;
+      document.getElementById("result").innerHTML = resultHTML;
+    }
+  </script>
 </body>
 </html>
